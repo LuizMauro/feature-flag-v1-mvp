@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Feature Flags</title>
+  </head>
+  <body>
+    <h1>Feature Flags</h1>
+
+    <!-- Elemento da Feature X -->
+    <div id="feature-x" style="display: none">
+      <button>Feature X</button>
+    </div>
+
+    <script>
+      class FeatureFlagsClient {
+        constructor(baseUrl, publicKey) {
+          this.baseUrl = baseUrl;
+          this.publicKey = publicKey;
+        }
+
+        async isFlagActive(flagName, environment, segmentType, segmentValue) {
+          const url = `${this.baseUrl}/flags/check?flag_name=${flagName}&environment=${environment}&segment_type=${segmentType}&segment_value=${segmentValue}`;
+          const response = await fetch(url, {
+            headers: {
+              Authorization: `Bearer ${this.publicKey}`,
+            },
+          });
+          const data = await response.json();
+          return data.is_active;
+        }
+      }
+
+      // Função para inicializar a página
+      async function initializePage() {
+        // Substitua pela sua chave pública
+        const publicKey = "65d095a52131a2a65c0efc9e2b0bff23";
+
+        // Cria o cliente de Feature Flags
+        const client = new FeatureFlagsClient(
+          "http://localhost:3000",
+          publicKey
+        );
+
+        // Verifica o status da Feature X
+        const isFeatureXActive = await client.isFlagActive(
+          "feature_x",
+          "HLG",
+          "client",
+          "123"
+        );
+
+        // Mostra ou esconde a Feature X com base no status
+        const featureXElement = document.getElementById("feature-x");
+        if (isFeatureXActive) {
+          featureXElement.style.display = "block";
+        } else {
+          featureXElement.style.display = "none";
+        }
+      }
+
+      // Inicializa a página quando o DOM estiver pronto
+      document.addEventListener("DOMContentLoaded", initializePage);
+    </script>
+  </body>
+</html>
