@@ -73,6 +73,11 @@ function generateKeys() {
   };
 }
 
+app.post("/status", (req, res) => {
+   res.json({ message: 'UP'});
+});
+
+
 // Rota para criar um novo usuário
 app.post("/users", (req, res) => {
   const { name } = req.body;
