@@ -74,7 +74,7 @@ function generateKeys() {
 }
 
 app.get("/status", (req, res) => {
-   res.json({ message: 'UP'});
+   res.json({ message: 'UP', status: 200});
 });
 
 
