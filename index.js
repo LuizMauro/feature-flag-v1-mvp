@@ -73,7 +73,7 @@ function generateKeys() {
   };
 }
 
-app.post("/status", (req, res) => {
+app.get("/status", (req, res) => {
    res.json({ message: 'UP'});
 });
 
